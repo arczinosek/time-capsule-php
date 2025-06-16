@@ -1,5 +1,5 @@
-controllers:
+milestone_controllers:
     resource:
-        path: ../src/Controller/
-        namespace: App\Controller
+        path: ../src/Milestone/Presentation/Http/Controller/
+        namespace: App\Milestone\Presentation\Http\Controller
     type: attribute

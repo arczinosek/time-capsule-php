@@ -1,0 +1,155 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Milestone\Domain\Model;
+
+use App\Milestone\Infrastructure\Repository\MilestoneRepository;
+use DateTimeImmutable;
+use DateTimeInterface;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping as ORM;
+use Exception;
+
+use function strlen;
+
+#[Entity(MilestoneRepository::class)]
+final class Milestone
+{
+    public const TITLE_LEN_MIN = 3;
+    public const TITLE_LEN_MAX = 127;
+
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: Types::INTEGER, options: ['unsigned' => true])]
+    // @phpstan-ignore property.onlyRead
+    private int $id;
+
+    #[ORM\Column(type: Types::STRING, length: self::TITLE_LEN_MAX)]
+    private string $title;
+
+    #[ORM\Column(type: Types::TEXT)]
+    private string $description;
+
+    #[ORM\Column(type: Types::DATETIMETZ_MUTABLE)]
+    private DateTimeInterface $startDate;
+
+    #[ORM\Column(type: Types::DATETIMETZ_MUTABLE)]
+    private DateTimeInterface $finishDate;
+
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
+    private readonly DateTimeInterface $createdAt;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?DateTimeInterface $updatedAt;
+
+    public function __construct()
+    {
+        $this->createdAt = new DateTimeImmutable();
+        $this->updatedAt = null;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public static function create(
+        string $title,
+        string $description,
+        DateTimeImmutable $startDate,
+        DateTimeImmutable $finishDate,
+    ): Milestone {
+        $milestone = new self();
+
+        $milestone
+            ->setTitle($title)
+            ->setDescription($description)
+            ->setPeriod($startDate, $finishDate)
+            ->updatedAt = null
+        ;
+
+        return $milestone;
+    }
+
+    public function touch(): self
+    {
+        $this->updatedAt = new DateTimeImmutable();
+
+        return $this;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function setTitle(string $newTitle): self
+    {
+        if (strlen($newTitle) < self::TITLE_LEN_MIN) {
+            throw new Exception('Title is too short!');
+        }
+
+        if (strlen($newTitle) > self::TITLE_LEN_MAX) {
+            throw new Exception('Title is too long!');
+        }
+
+        $this->title = $newTitle;
+
+        return $this->touch();
+    }
+
+    public function setDescription(string $newDescription): self
+    {
+        $this->description = $newDescription;
+
+        return $this->touch();
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function setPeriod(DateTimeInterface $startDate, DateTimeInterface $finishDate): self
+    {
+        if ($startDate > $finishDate) {
+            throw new Exception('Start date cannot be after finish date!');
+        }
+
+        $this->startDate = $startDate;
+        $this->finishDate = $finishDate;
+
+        return $this->touch();
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    public function getStartDate(): DateTimeInterface
+    {
+        return $this->startDate;
+    }
+
+    public function getFinishDate(): DateTimeInterface
+    {
+        return $this->finishDate;
+    }
+
+    public function getCreatedAt(): DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function getUpdatedAt(): ?DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+}

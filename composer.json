@@ -63,12 +63,29 @@
             "cache:clear": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd"
         },
+        "ci:test": [
+            "@phpcs",
+            "@phpstan",
+            "@test:unit",
+            "@test:integration"
+        ],
+        "dev:fix": "@phpcbf",
+        "dev:test": [
+            "@phpcs",
+            "@phpstan",
+            "@test:unit"
+        ],
+        "phpcs": "vendor/bin/phpcs -p --cache",
+        "phpcbf": "vendor/bin/phpcbf",
+        "phpstan": "vendor/bin/phpstan",
         "post-install-cmd": [
             "@auto-scripts"
         ],
         "post-update-cmd": [
             "@auto-scripts"
-        ]
+        ],
+        "test:unit": ["phpunit --testsuit Unit"],
+        "test:integration": ["phpunit --testsuit Integration"]
     },
     "conflict": {
         "symfony/symfony": "*"
