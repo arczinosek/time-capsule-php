@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace App\Milestone\Domain\Model;
 
+use App\Milestone\Domain\Exception\TooManyAttachmentsException;
 use App\Milestone\Infrastructure\Repository\MilestoneRepository;
 use DateTimeImmutable;
 use DateTimeInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
-use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Entity;
 use Exception;
 
 use function strlen;
@@ -20,13 +23,16 @@ final class Milestone
     public const TITLE_LEN_MIN = 3;
     public const TITLE_LEN_MAX = 127;
 
+    private const ATTACHMENT_LIMIT = 20;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: Types::INTEGER, options: ['unsigned' => true])]
+
     // @phpstan-ignore property.onlyRead
     private int $id;
 
-    #[ORM\Column(type: Types::STRING, length: self::TITLE_LEN_MAX)]
+    #[ORM\Column(length: self::TITLE_LEN_MAX)]
     private string $title;
 
     #[ORM\Column(type: Types::TEXT)]
@@ -38,6 +44,16 @@ final class Milestone
     #[ORM\Column(type: Types::DATETIMETZ_MUTABLE)]
     private DateTimeInterface $finishDate;
 
+    /**
+     * @var Collection<int, Attachment>
+     */
+    #[ORM\OneToMany(
+        targetEntity: Attachment::class,
+        mappedBy: 'milestone',
+        cascade: ['persist'],
+    )]
+    private Collection $attachments;
+
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private readonly DateTimeInterface $createdAt;
 
@@ -46,6 +62,7 @@ final class Milestone
 
     public function __construct()
     {
+        $this->attachments = new ArrayCollection();
         $this->createdAt = new DateTimeImmutable();
         $this->updatedAt = null;
     }
@@ -118,6 +135,44 @@ final class Milestone
         return $this->touch();
     }
 
+    /**
+     * @throws TooManyAttachmentsException
+     */
+    public function addAttachment(
+        string $filePath,
+        string $fileMimeType,
+        int $fileSizeBytes,
+        string $originalFileName,
+        ?string $description = null,
+    ): Attachment {
+        if ($this->attachments->count() >= self::ATTACHMENT_LIMIT) {
+            throw TooManyAttachmentsException::create($filePath, self::ATTACHMENT_LIMIT);
+        }
+
+        $attachment = Attachment::create(
+            $this,
+            $filePath,
+            $fileMimeType,
+            $fileSizeBytes,
+            $originalFileName,
+            $description
+        );
+
+        $this->attachments->add($attachment);
+        $this->touch();
+
+        return $attachment;
+    }
+
+    public function removeAttachment(Attachment $file): self
+    {
+        if ($this->attachments->removeElement($file)) {
+            $this->touch();
+        }
+
+        return $this;
+    }
+
     public function getId(): int
     {
         return $this->id;
@@ -141,6 +196,14 @@ final class Milestone
     public function getFinishDate(): DateTimeInterface
     {
         return $this->finishDate;
+    }
+
+    /**
+     * @return Collection<int, Attachment>
+     */
+    public function getAttachments(): Collection
+    {
+        return $this->attachments;
     }
 
     public function getCreatedAt(): DateTimeInterface
