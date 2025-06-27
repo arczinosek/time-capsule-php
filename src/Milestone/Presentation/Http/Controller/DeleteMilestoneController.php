@@ -18,11 +18,11 @@ class DeleteMilestoneController extends AbstractController
     ) {
     }
 
-    #[Route('/{id<\d+>}', name: 'api_delete_milestone', methods: ['DELETE'])]
+    #[Route('/{milestoneId}', name: 'api_delete_milestone', methods: ['DELETE'])]
     public function delete(
-        int $id,
+        int $milestoneId,
     ): Response {
-        $this->handler->handle(new DeleteMilestoneCommand($id));
+        $this->handler->handle(new DeleteMilestoneCommand($milestoneId));
 
         return new Response(null, Response::HTTP_NO_CONTENT);
     }

@@ -42,16 +42,16 @@ class GetMilestoneController extends AbstractController
         );
     }
 
-    #[Route('/{id<\d+>}', name: 'api_get_milestone', methods: ['GET'])]
+    #[Route('/{milestoneId}', name: 'api_get_milestone', methods: ['GET'])]
     public function get(
-        int $id,
+        int $milestoneId,
     ): JsonResponse {
         $milestone = $this->getMilestoneHandler->handle(
-            new GetMilestoneQuery($id)
+            new GetMilestoneQuery($milestoneId)
         );
 
         if ($milestone === null) {
-            throw $this->createNotFoundException("Milestone '$id' not found.");
+            throw $this->createNotFoundException("Milestone '$milestoneId' not found.");
         }
 
         return $this->json(

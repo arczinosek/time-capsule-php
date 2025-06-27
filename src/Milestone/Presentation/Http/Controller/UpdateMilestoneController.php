@@ -30,15 +30,15 @@ class UpdateMilestoneController extends AbstractController
     /**
      * @throws Exception
      */
-    #[Route('/{id<\d+>}', name: 'update-milestone', methods: ['PATCH'])]
+    #[Route('/{milestoneId}', name: 'update-milestone', methods: ['PATCH'])]
     public function update(
-        int $id,
+        int $milestoneId,
         #[MapRequestPayload(validationGroups: ['update'])]
         UpdateMilestoneRequest $updateMilestoneRequest,
         Request $request,
     ): JsonResponse {
         $this->logger->debug('UpdateMilestoneRequest', [
-            'id' => $id,
+            'id' => $milestoneId,
             'request' => $updateMilestoneRequest,
             'data' => $request->getContent(),
             'contentType' => $request->headers->get('Content-Type'),
@@ -48,7 +48,7 @@ class UpdateMilestoneController extends AbstractController
             $value ? new DateTimeImmutable($value) : null;
 
         $command = new UpdateMilestoneCommand(
-            $id,
+            $milestoneId,
             $updateMilestoneRequest->title,
             $updateMilestoneRequest->description,
             $dateOrNull($updateMilestoneRequest->startDate),
