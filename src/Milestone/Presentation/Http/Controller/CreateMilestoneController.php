@@ -45,7 +45,7 @@ class CreateMilestoneController extends AbstractController
         $milestone = $this->handler->handle($command);
 
         return $this->json(
-            MilestoneResponse::fromMilestone($milestone)
+            MilestoneResponse::createFromEntity($milestone)
         );
     }
 }

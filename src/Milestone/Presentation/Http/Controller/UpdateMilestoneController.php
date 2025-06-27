@@ -59,7 +59,7 @@ class UpdateMilestoneController extends AbstractController
             $milestone = $this->handler->handle($command);
 
             return $this->json(
-                MilestoneResponse::fromMilestone($milestone)
+                MilestoneResponse::createFromEntity($milestone)
             );
         } catch (MilestoneNotFoundException $e) {
             throw $this->createNotFoundException($e->getMessage());

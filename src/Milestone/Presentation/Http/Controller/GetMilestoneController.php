@@ -38,7 +38,7 @@ class GetMilestoneController extends AbstractController
         );
 
         return $this->json(
-            MilestonesListResponse::fromMilestones($milestones)
+            MilestonesListResponse::createFromArray($milestones)
         );
     }
 
@@ -55,7 +55,7 @@ class GetMilestoneController extends AbstractController
         }
 
         return $this->json(
-            MilestoneResponse::fromMilestone($milestone)
+            MilestoneResponse::createFromEntity($milestone)
         );
     }
 }

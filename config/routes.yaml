@@ -1,5 +1,7 @@
 milestone_controllers:
+    type: attribute
     resource:
         path: ../src/Milestone/Presentation/Http/Controller/
         namespace: App\Milestone\Presentation\Http\Controller
-    type: attribute
+    requirements:
+        milestoneId: '\d+'

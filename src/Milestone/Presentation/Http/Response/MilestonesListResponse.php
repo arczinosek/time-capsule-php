@@ -20,11 +20,11 @@ readonly class MilestonesListResponse
      * @param Milestone[] $milestones
      * @return self
      */
-    public static function fromMilestones(array $milestones): self
+    public static function createFromArray(array $milestones): self
     {
         return new self(
             array_map(
-                fn (Milestone $milestone) => MilestoneResponse::fromMilestone($milestone),
+                fn (Milestone $milestone) => MilestoneResponse::createFromEntity($milestone),
                 $milestones
             )
         );
