@@ -74,7 +74,7 @@
         "dev:test": [
             "@phpcs",
             "@phpstan",
-            "@test:unit"
+            "@test:unit:cov"
         ],
         "phpcs": "vendor/bin/phpcs -p --cache",
         "phpcbf": "vendor/bin/phpcbf",
@@ -85,7 +85,9 @@
         "post-update-cmd": [
             "@auto-scripts"
         ],
+        "test:cov": ["XDEBUG_MODE=coverage phpunit --coverage-html=var/test-coverage --coverage-text=/dev/stdout --only-summary-for-coverage-text"],
         "test:unit": ["phpunit --testsuit Unit"],
+        "test:unit:cov": ["XDEBUG_MODE=coverage phpunit --testsuit Unit --coverage-html=var/test-coverage --coverage-text=/dev/stdout --only-summary-for-coverage-text"],
         "test:integration": ["phpunit --testsuit Integration"]
     },
     "conflict": {
