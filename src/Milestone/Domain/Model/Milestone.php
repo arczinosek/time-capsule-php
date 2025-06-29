@@ -50,7 +50,7 @@ final class Milestone
     #[ORM\OneToMany(
         targetEntity: Attachment::class,
         mappedBy: 'milestone',
-        cascade: ['persist'],
+        cascade: ['persist', 'remove'],
     )]
     private Collection $attachments;
 
