@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace App\Milestone\Presentation\Http\Controller;
 
 use App\Milestone\Application\Command\AddAttachmentCommand;
+use App\Milestone\Application\Command\DeleteAttachmentCommand;
 use App\Milestone\Application\Exception\FileUploadFailedException;
 use App\Milestone\Application\Exception\MilestoneNotFoundException;
 use App\Milestone\Application\Handler\AddAttachmentHandler;
+use App\Milestone\Application\Handler\DeleteAttachmentHandler;
 use App\Milestone\Domain\Exception\TooManyAttachmentsException;
 use App\Milestone\Presentation\Http\Response\AttachmentResponse;
 use Psr\Log\LoggerInterface;
@@ -15,6 +17,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapUploadedFile;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Attribute\Route;
@@ -25,11 +28,12 @@ class AttachmentController extends AbstractController
 {
     public function __construct(
         private readonly AddAttachmentHandler $addAttachmentHandler,
+        private readonly DeleteAttachmentHandler $deleteAttachmentHandler,
         private readonly LoggerInterface $logger,
     ) {
     }
 
-    // TODO: Add PATCH & DELETE methods
+    // TODO: Add PATCH (description)
 
     #[Route(
         '/{milestoneId}/attachments',
@@ -71,6 +75,26 @@ class AttachmentController extends AbstractController
         } catch (TooManyAttachmentsException $e) {
             // TODO: which HTTP code?
             throw new BadRequestHttpException($e->getMessage());
+        }
+    }
+
+    #[Route(
+        '/{milestoneId}/attachments/{attachmentId}',
+        name: 'app_milestone_delete_attachment',
+        methods: ['DELETE'],
+    )]
+    public function deleteAttachment(
+        int $milestoneId,
+        int $attachmentId,
+    ): Response {
+        $command = new DeleteAttachmentCommand($milestoneId, $attachmentId);
+
+        try {
+            $this->deleteAttachmentHandler->handle($command);
+
+            return new Response(status: Response::HTTP_NO_CONTENT);
+        } catch (MilestoneNotFoundException $e) {
+            throw $this->createNotFoundException($e->getMessage());
         }
     }
 }

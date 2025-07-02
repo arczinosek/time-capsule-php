@@ -51,6 +51,7 @@ final class Milestone
         targetEntity: Attachment::class,
         mappedBy: 'milestone',
         cascade: ['persist', 'remove'],
+        orphanRemoval: true,
     )]
     private Collection $attachments;
 
@@ -164,9 +165,9 @@ final class Milestone
         return $attachment;
     }
 
-    public function removeAttachment(Attachment $file): self
+    public function removeAttachment(Attachment $attachment): self
     {
-        if ($this->attachments->removeElement($file)) {
+        if ($this->attachments->removeElement($attachment)) {
             $this->touch();
         }
 
@@ -204,6 +205,13 @@ final class Milestone
     public function getAttachments(): Collection
     {
         return $this->attachments;
+    }
+
+    public function getAttachmentById(int $attachmentId): ?Attachment
+    {
+        return $this->attachments->findFirst(
+            fn (int $id, Attachment $attachment): bool => $attachment->getId() === $attachmentId
+        );
     }
 
     public function getCreatedAt(): DateTimeInterface

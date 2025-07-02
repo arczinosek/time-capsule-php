@@ -5,19 +5,20 @@ declare(strict_types=1);
 namespace App\Milestone\Application\Handler;
 
 use App\Milestone\Application\Command\AddAttachmentCommand;
+use App\Milestone\Application\Common\GetMilestoneTrait;
 use App\Milestone\Application\Exception\FileUploadFailedException;
 use App\Milestone\Application\Exception\MilestoneNotFoundException;
 use App\Milestone\Application\Interface\AttachmentStorageService;
-use App\Milestone\Application\Query\GetMilestoneQuery;
 use App\Milestone\Domain\Exception\TooManyAttachmentsException;
 use App\Milestone\Domain\Model\Attachment;
-use App\Milestone\Domain\Model\Milestone;
 use App\Milestone\Infrastructure\Repository\MilestoneRepository;
 use Exception;
 use Psr\Log\LoggerInterface;
 
-final readonly class AddAttachmentHandler
+readonly class AddAttachmentHandler
 {
+    use GetMilestoneTrait;
+
     public function __construct(
         private GetMilestoneHandler $getMilestoneHandler,
         private LoggerInterface $logger,
@@ -70,21 +71,5 @@ final readonly class AddAttachmentHandler
 
             throw $exception;
         }
-    }
-
-    /**
-     * @throws MilestoneNotFoundException
-     */
-    private function getMilestone(int $milestoneId): Milestone
-    {
-        $milestone = $this->getMilestoneHandler->handle(
-            new GetMilestoneQuery($milestoneId)
-        );
-
-        if (!$milestone) {
-            throw MilestoneNotFoundException::forId($milestoneId);
-        }
-
-        return $milestone;
     }
 }

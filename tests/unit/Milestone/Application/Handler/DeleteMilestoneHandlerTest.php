@@ -38,7 +38,7 @@ final class DeleteMilestoneHandlerTest extends TestCase
     }
 
     #[Test]
-    public function handleShouldNotCallRepositoryNorEmitEventWhenMilestoneIsNotFound(): void
+    public function handleShouldNotCallRepositoryNorEmitEventWhenMilestoneNotExists(): void
     {
         $command = new DeleteMilestoneCommand(1);
 
