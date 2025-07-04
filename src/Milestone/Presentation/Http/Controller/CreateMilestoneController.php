@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/api/milestones')]
+#[Route('/api/milestones', name: 'api_milestone_')]
 class CreateMilestoneController extends AbstractController
 {
     public function __construct(
@@ -28,7 +28,7 @@ class CreateMilestoneController extends AbstractController
     /**
      * @throws Exception
      */
-    #[Route('', name: 'api_create_milestone', methods: ['POST'])]
+    #[Route('', name: 'create', methods: ['POST'])]
     public function create(
         #[MapRequestPayload(validationGroups: ['create'])]
         CreateMilestoneRequest $request

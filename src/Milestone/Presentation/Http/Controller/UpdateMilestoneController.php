@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/api/milestones')]
+#[Route('/api/milestones', name: 'api_milestone_')]
 class UpdateMilestoneController extends AbstractController
 {
     public function __construct(
@@ -30,7 +30,7 @@ class UpdateMilestoneController extends AbstractController
     /**
      * @throws Exception
      */
-    #[Route('/{milestoneId}', name: 'update-milestone', methods: ['PATCH'])]
+    #[Route('/{milestoneId}', name: 'update', methods: ['PATCH'])]
     public function update(
         int $milestoneId,
         #[MapRequestPayload(validationGroups: ['update'])]

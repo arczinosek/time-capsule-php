@@ -10,7 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/api/milestones')]
+#[Route('/api/milestones', name: 'api_milestone_')]
 class DeleteMilestoneController extends AbstractController
 {
     public function __construct(
@@ -18,7 +18,7 @@ class DeleteMilestoneController extends AbstractController
     ) {
     }
 
-    #[Route('/{milestoneId}', name: 'api_delete_milestone', methods: ['DELETE'])]
+    #[Route('/{milestoneId}', name: 'delete', methods: ['DELETE'])]
     public function delete(
         int $milestoneId,
     ): Response {

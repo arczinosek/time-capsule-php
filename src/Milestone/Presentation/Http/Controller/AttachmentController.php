@@ -23,7 +23,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[Route('/api/milestones')]
+#[Route('/api/milestones', name: 'api_milestone_attachment_')]
 class AttachmentController extends AbstractController
 {
     public function __construct(
@@ -37,7 +37,7 @@ class AttachmentController extends AbstractController
 
     #[Route(
         '/{milestoneId}/attachments',
-        name: 'app_milestone_add_attachment',
+        name: 'add',
         methods: ['POST'],
     )]
     public function addAttachment(
@@ -80,7 +80,7 @@ class AttachmentController extends AbstractController
 
     #[Route(
         '/{milestoneId}/attachments/{attachmentId}',
-        name: 'app_milestone_delete_attachment',
+        name: 'delete',
         methods: ['DELETE'],
     )]
     public function deleteAttachment(
