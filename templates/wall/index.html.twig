@@ -2,43 +2,42 @@
 
 {% block title %}Wall - Time Capsule{% endblock %}
 
+{% block stylesheets %}
+<link rel="stylesheet" href="{{ asset('assets/css/wall.css') }}">
+{% endblock %}
+
 {% block body %}
-<header class="bd-header bg-dark py-3 d-flex align-items-stretch border-bottom border-dark sticky-top">
+<header class="bd-header py-3 d-flex align-items-stretch border-dark sticky-top" style="background:linear-gradient(#12b90e, #12b90ef7);">
     <div class="container-fluid d-flex align-items-center">
         <a class="navbar-brand text-white fs-4" href="{{ path('app_home') }}">Time capsule</a>
     </div>
 </header>
 <main>
-    <div class="container" style="max-width: 720px">
-        <div class="row">
-            <div class="col">
-                <h1>Your Milestone Wall</h1>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col col-lg-8 col-xl-6">
+                <h1>Events</h1>
             </div>
         </div>
-        <div class="row row-cols-1">
-            <div class="col">
-                {% for index in [1, 2, 3, 4, 5] %}
-                <div class="card mb-3">
-                    <div class="row g-0">
-                        <div class="col-4">
-                            <svg aria-label="Placeholder: Image cap" class="bd-placeholder-img img-fluid rounded-start" height="180" preserveAspectRatio="xMidYMid slice" role="img" width="100%" xmlns="http://www.w3.org/2000/svg">
-                                <title>Placeholder</title>
-                                <rect width="100%" height="100%" fill="#868e96" />
-                                <text x="35%" y="49%" fill="#dee2e6" dy=".3em">Image cap</text>
-                            </svg>
-                        </div>
-                        <div class="col-8">
-                            <div class="card-body">
-                                <h5 class="card-title">Lorem ipsum dolor sit amet</h5>
-                                <h6 class="card-subtitle mb-2 text-body-secondary">24-26 Dec '24</h6>
-                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                            </div>
-                        </div>
+        {% for milestone in milestones %}
+        <div class="row justify-content-center mb-3">
+            <div class="col col-lg-8 col-xl-6">
+                <div class="card">
+                    <div class="card-img-top border-bottom text-center">
+                        <img src="{{ asset('assets/gfx/landscape.svg') }}" class="cover-placeholder" alt="">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ milestone.title }}</h5>
+                        <h6 class="card-subtitle text-body-secondary mb-2">24-26 Dec '24</h6>
+                        <p class="card-text">{{ milestone.description }}</p>
+                    </div>
+                    <div class="card-footer text-end">
+                        <small class="text-body-secondary">24-26 Dec '24</small>
                     </div>
                 </div>
-                {% endfor %}
             </div>
         </div>
+        {% endfor %}
     </div>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>

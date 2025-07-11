@@ -1,0 +1,10 @@
+body {
+    background: #0000000d;
+}
+
+.cover-placeholder {
+    max-width: 40%;
+    filter: grayscale(85%);
+    margin-top: 5rem;
+    margin-bottom: 5rem;
+}
