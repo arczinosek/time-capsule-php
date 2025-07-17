@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Milestone\Infrastructure\Service;
 
 use App\Milestone\Application\DTO\UploadedFileInfo;
+use App\Milestone\Application\Exception\FileReadException;
 use App\Milestone\Application\Exception\FileUploadFailedException;
 use App\Milestone\Application\Interface\AttachmentStorageService;
 use League\Flysystem\FilesystemException;
@@ -66,6 +67,19 @@ final readonly class FlysystemAttachmentStorageService implements AttachmentStor
             if (is_resource($sourceFileStream)) {
                 fclose($sourceFileStream);
             }
+        }
+    }
+
+    /**
+     * @throws FileReadException
+     * @return resource
+     */
+    public function getReadStream(string $filePath)
+    {
+        try {
+            return $this->milestoneAttachmentStorage->readStream($filePath);
+        } catch (FilesystemException $e) {
+            throw new FileReadException($e->getMessage(), previous: $e);
         }
     }
 
