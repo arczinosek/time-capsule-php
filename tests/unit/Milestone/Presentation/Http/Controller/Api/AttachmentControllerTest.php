@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\unit\Milestone\Presentation\Http\Controller;
+namespace App\Tests\unit\Milestone\Presentation\Http\Controller\Api;
 
 use App\Milestone\Application\Command\DeleteAttachmentCommand;
 use App\Milestone\Application\Exception\MilestoneNotFoundException;
 use App\Milestone\Application\Handler\AddAttachmentHandler;
 use App\Milestone\Application\Handler\DeleteAttachmentHandler;
-use App\Milestone\Presentation\Http\Controller\AttachmentController;
+use App\Milestone\Presentation\Http\Controller\Api\AttachmentController;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;

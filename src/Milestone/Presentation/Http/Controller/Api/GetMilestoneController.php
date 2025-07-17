@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Milestone\Presentation\Http\Controller;
+namespace App\Milestone\Presentation\Http\Controller\Api;
 
 use App\Milestone\Application\Handler\GetMilestoneHandler;
 use App\Milestone\Application\Handler\ListMilestonesHandler;
