@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace App\Milestone\Application\Exception;
 
-use Exception;
-
-class MilestoneNotFoundException extends Exception
+class MilestoneNotFoundException extends ResourceNotFoundException
 {
     public readonly int $milestoneId;
 
