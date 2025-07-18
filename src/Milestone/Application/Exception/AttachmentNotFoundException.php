@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Milestone\Application\Exception;
 
+use App\Milestone\Application\DTO\FileId;
+
 class AttachmentNotFoundException extends ResourceNotFoundException
 {
     public function __construct(
@@ -14,12 +16,12 @@ class AttachmentNotFoundException extends ResourceNotFoundException
         parent::__construct($message);
     }
 
-    public static function forId(int $attachmentId, int $milestoneId): self
+    public static function forFileId(FileId $fileId): self
     {
         return new self(
-            "Attachment '$attachmentId' ($milestoneId) not found",
-            $attachmentId,
-            $milestoneId
+            "Attachment '$fileId->attachmentId' ($fileId->milestoneId) not found",
+            $fileId->attachmentId,
+            $fileId->milestoneId
         );
     }
 }

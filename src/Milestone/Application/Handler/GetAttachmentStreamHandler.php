@@ -29,11 +29,12 @@ class GetAttachmentStreamHandler
      */
     public function handle(GetAttachmentStreamQuery $query): AttachmentReadStream
     {
-        $milestone = $this->getMilestone($query->milestoneId);
-        $attachment = $milestone->getAttachmentById($query->attachmentId);
+        $fileId = $query->fileId;
+        $milestone = $this->getMilestone($fileId->milestoneId);
+        $attachment = $milestone->getAttachmentById($fileId->attachmentId);
 
         if (!$attachment) {
-            throw AttachmentNotFoundException::forId($query->attachmentId, $query->milestoneId);
+            throw AttachmentNotFoundException::forFileId($query->fileId);
         }
 
         $resource = $this->attachmentStorageService->getReadStream($attachment->getFilePath());
