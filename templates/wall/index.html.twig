@@ -24,7 +24,11 @@
             <div class="col col-lg-8 col-xl-6">
                 <div class="card">
                     <div class="card-img-top border-bottom text-center">
-                        <img src="{{ asset('assets/gfx/landscape.svg') }}" class="cover-placeholder" alt="">
+                        {% if milestone.coverPhoto %}
+                        <img src="{{ path('app_attachment_stream', { fileId: milestone.coverPhoto.fileId }) }}" class="card-img" alt="Event photo">
+                        {% else %}
+                        <img src="{{ asset('assets/gfx/landscape.svg') }}" class="cover-placeholder" alt="Event photo placeholder">
+                        {% endif %}
                     </div>
                     <div class="card-body">
                         <h5 class="card-title">{{ milestone.title }}</h5>
