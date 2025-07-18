@@ -10,6 +10,7 @@ use InvalidArgumentException;
 use function fclose;
 use function feof;
 use function fread;
+use function is_resource;
 
 class AttachmentReadStream
 {
@@ -34,7 +35,9 @@ class AttachmentReadStream
 
     public function __destruct()
     {
-        fclose($this->resource);
+        if (is_resource($this->resource)) {
+            fclose($this->resource);
+        }
     }
 
     public function getIterator(int $chunkSize = 4096): Generator
