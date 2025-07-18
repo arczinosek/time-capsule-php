@@ -13,6 +13,7 @@ final readonly class AttachmentResponse
         public int $id,
         public string $url,
         public string $fileName,
+        public string $fileId,
         public ?string $description,
         public string $mimeType,
         public int $sizeBytes,
@@ -25,8 +26,9 @@ final readonly class AttachmentResponse
     {
         return new self(
             $attachment->getId(),
-            $attachment->getFilePath(), // TODO: get read url
+            $attachment->getFilePath(),
             $attachment->getOriginalFileName(),
+            $attachment->getFileId()->encode(),
             $attachment->getDescription(),
             $attachment->getFileMimeType(),
             $attachment->getFileSizeBytes(),

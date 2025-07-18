@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace App\Milestone\Domain\Model;
 
+use App\Milestone\Application\DTO\FileId;
 use App\Milestone\Infrastructure\Repository\AttachmentRepository;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+
+use function explode;
 
 #[ORM\Entity(repositoryClass: AttachmentRepository::class)]
 class Attachment
@@ -84,9 +87,26 @@ class Attachment
         return $this->filePath;
     }
 
+    public function getFileId(): FileId
+    {
+        return new FileId($this->getId(), $this->milestone->getId());
+    }
+
     public function getFileMimeType(): string
     {
         return $this->fileMimeType;
+    }
+
+    public function isOfType(string $type): bool
+    {
+        [$currentType,] = explode('/', $this->getFileMimeType());
+
+        return $currentType === $type;
+    }
+
+    public function isImage(): bool
+    {
+        return $this->isOfType('image');
     }
 
     public function getFileSizeBytes(): int
