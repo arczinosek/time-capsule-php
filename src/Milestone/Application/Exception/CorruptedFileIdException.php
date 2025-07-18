@@ -9,10 +9,9 @@ use Exception;
 class CorruptedFileIdException extends Exception
 {
     public function __construct(
-        string $message,
         public readonly string $encoded,
-        public readonly string $decoded,
+        public readonly ?string $decoded = null,
     ) {
-        parent::__construct($message);
+        parent::__construct('Corrupted fileId provided');
     }
 }

@@ -5,3 +5,4 @@ milestone_controllers:
         namespace: App\Milestone\Presentation\Http\Controller
     requirements:
         milestoneId: '\d+'
+        fileId: '[a-zA-Z0-9]+'

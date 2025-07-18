@@ -6,6 +6,7 @@ namespace App\Milestone\Application\DTO;
 
 use App\Milestone\Application\Exception\CorruptedFileIdException;
 use Base64Url\Base64Url;
+use InvalidArgumentException;
 
 use function preg_match;
 use function sprintf;
@@ -17,12 +18,16 @@ final readonly class FileId
      */
     public static function decode(string $fileId): self
     {
-        $decoded = Base64Url::decode($fileId);
+        try {
+            $decoded = Base64Url::decode($fileId);
+        } catch (InvalidArgumentException $e) {
+            throw new CorruptedFileIdException($fileId);
+        }
+
         $matches = [];
 
         if (!preg_match('/^(\d+)_(\d+)$/', $decoded, $matches)) {
             throw new CorruptedFileIdException(
-                'Corrupted fileId, cannot be decoded',
                 $fileId,
                 $decoded
             );
