@@ -1,0 +1,21 @@
+<div class="row justify-content-center mb-3">
+    <div class="col col-lg-8 col-xl-6">
+        <div class="card">
+            <div class="card-img-top border-bottom text-center">
+                {% if milestone.coverPhoto %}
+                    <img src="{{ path('app_attachment_stream', { fileId: milestone.coverPhoto.fileId }) }}" class="card-img" alt="Event photo">
+                {% else %}
+                    <img src="{{ asset('assets/gfx/landscape.svg') }}" class="cover-placeholder" alt="Event photo placeholder">
+                {% endif %}
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">{{ milestone.title }}</h5>
+                <h6 class="card-subtitle text-body-secondary mb-2">24-26 Dec '24</h6>
+                <p class="card-text">{{ milestone.description }}</p>
+            </div>
+            <div class="card-footer text-end">
+                <small class="text-body-secondary">24-26 Dec '24</small>
+            </div>
+        </div>
+    </div>
+</div>

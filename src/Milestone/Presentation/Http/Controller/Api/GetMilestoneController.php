@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Milestone\Presentation\Http\Controller;
+namespace App\Milestone\Presentation\Http\Controller\Api;
 
 use App\Milestone\Application\Handler\GetMilestoneHandler;
 use App\Milestone\Application\Handler\ListMilestonesHandler;
@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/api/milestones')]
+#[Route('/api/milestones', name: 'api_milestone_')]
 class GetMilestoneController extends AbstractController
 {
     public function __construct(
@@ -29,7 +29,7 @@ class GetMilestoneController extends AbstractController
     /**
      * @throws Exception
      */
-    #[Route('', name: 'api_list_milestones', methods: ['GET'])]
+    #[Route('', name: 'list', methods: ['GET'])]
     public function list(
         #[MapQueryString] ListMilestonesRequest $request
     ): JsonResponse {
@@ -42,7 +42,7 @@ class GetMilestoneController extends AbstractController
         );
     }
 
-    #[Route('/{milestoneId}', name: 'api_get_milestone', methods: ['GET'])]
+    #[Route('/{milestoneId}', name: 'get', methods: ['GET'])]
     public function get(
         int $milestoneId,
     ): JsonResponse {

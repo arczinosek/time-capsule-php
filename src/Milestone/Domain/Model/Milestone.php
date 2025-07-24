@@ -174,6 +174,13 @@ final class Milestone
         return $this;
     }
 
+    public function getCoverPhoto(): ?Attachment
+    {
+        return $this->attachments->findFirst(
+            fn (int $id, Attachment $attachment): bool => $attachment->isImage()
+        );
+    }
+
     public function getId(): int
     {
         return $this->id;

@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Wall - Time Capsule{% endblock %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="{{ asset('assets/css/wall.css') }}">
+{% endblock %}
+
+{% block body %}
+<header class="bd-header py-3 d-flex align-items-stretch border-dark sticky-top" style="background:linear-gradient(#12b90e, #12b90ef7);">
+    <div class="container-fluid d-flex align-items-center">
+        <a class="navbar-brand text-white fs-4" href="{{ path('app_home') }}">Time capsule</a>
+    </div>
+</header>
+<main>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col col-lg-8 col-xl-6">
+                <h1>Events</h1>
+            </div>
+        </div>
+        {% for milestone in milestones %}
+        {{ include('wall/milestone.html.twig') }}
+        {% endfor %}
+    </div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+{% endblock %}

@@ -17,6 +17,8 @@
         "league/flysystem-bundle": "^3.4",
         "phpdocumentor/reflection-docblock": "^5.6",
         "phpstan/phpdoc-parser": "^2.1",
+        "spomky-labs/base64url": "^2.0",
+        "symfony/asset": "7.3.*",
         "symfony/console": "7.3.*",
         "symfony/dotenv": "7.3.*",
         "symfony/flex": "^2",
@@ -27,6 +29,7 @@
         "symfony/property-info": "7.3.*",
         "symfony/runtime": "7.3.*",
         "symfony/serializer": "7.3.*",
+        "symfony/twig-bundle": "7.3.*",
         "symfony/validator": "7.3.*",
         "symfony/yaml": "7.3.*"
     },
